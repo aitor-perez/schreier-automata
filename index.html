@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Schreier graphs</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="layout.css">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+	</head>
+	<body>
+    <div class="container">
+      <h1>Schreier graphs of automata groups</h1>
+
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="example">Select an automaton:</label>
+            <select class="form-control" id="example">
+              <option value="0">-</option>
+              <option value="1">Adding machine</option>
+              <option value="2">Grigorchuk</option>
+              <option value="3">Basilica</option>
+              <option value="4">Aleshin</option>
+              <option value="5">Fabrykowski-Gupta</option>
+              <option value="6">Gupta-Sidki</option>
+              <option value="-1">Custom...</option>
+            </select>
+          </div>
+
+          <img src="img/adding.png" title="Adding machine automaton" alt="Automaton for the adding machine group" id="automaton-1" class="collapse img-thumbnail"/>
+          <img src="img/grigorchuk.png" title="Grigorchuk's group automaton" alt="Automaton for Grigorchuk's group" id="automaton-2" class="collapse img-thumbnail"/>
+          <img src="img/basilica.png" title="Basilica group automaton" alt="Automaton for the Basilica group" id="automaton-3" class="collapse img-thumbnail"/>
+          <img src="img/aleshin.png" title="Aleshin automaton" alt="Aleshin automaton" id="automaton-4" class="collapse img-thumbnail"/>
+          <img src="img/fg.png" title="Fabrykowski-Gupta group automaton" alt="Automaton for the Fabrykowski-Gupta group" id="automaton-5" class="collapse img-thumbnail"/>
+          <img src="img/guptasidki.png" title="Gupta-Sidki group automaton" alt="Automaton for the Gupta-Sidki group" id="automaton-6" class="collapse img-thumbnail"/>
+        </div>
+
+        <div class="col-md-9">
+          <p class="lead">Choose an automaton group from the list or input your own automaton and visualize the Schreier graphs for its action on a given level of the tree.</p>
+          <p class="lead">The canvas will resize automatically while you drag vertices around. Loops on single vertices are not shown.</p>
+        </div>
+      </div>
+
+      <div id="custom-automata" class="panel panel-default collapse">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-group">
+                <label for="number-states">Number of states:</label>
+                <select class="form-control" id="number-states">
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                  <option>6</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="size-alphabet">Size of alphabet:</label>
+                <select class="form-control" id="size-alphabet">
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                  <option>6</option>
+                </select>
+              </div>
+            </div>
+          
+            <div id="outputs" class="col-md-5">
+              <table class="table table-condensed table-bordered">
+                <thead>
+                  <tr>
+                    <th>Outputs</th>
+                    <th class="text-center s1">0</th>
+                    <th class="text-center s2">1</th>
+                    <th class="text-center s3">2</th>
+                    <th class="text-center s4">3</th>
+                    <th class="text-center s5">4</th>
+                    <th class="text-center s6">5</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr id="out-q1" class="q1">
+                    <th scope="row" class="text-center">a <div class="legend q1"></div></th>
+                    <td class="s1"><input type="text" class="form-control input-sm" id="out10" placeholder="e.g. 0, 1"></td>
+                    <td class="s2"><input type="text" class="form-control input-sm" id="out11"></td>
+                    <td class="s3"><input type="text" class="form-control input-sm" id="out12"></td>
+                    <td class="s4"><input type="text" class="form-control input-sm" id="out13"></td>
+                    <td class="s5"><input type="text" class="form-control input-sm" id="out14"></td>
+                    <td class="s6"><input type="text" class="form-control input-sm" id="out15"></td>
+                  </tr>
+                  <tr id="out-q2" class="q2">
+                    <th scope="row" class="text-center">b <div class="legend q2"></div></th>
+                    <td class="s1"><input type="text" class="form-control input-sm" id="out20"></td>
+                    <td class="s2"><input type="text" class="form-control input-sm" id="out21"></td>
+                    <td class="s3"><input type="text" class="form-control input-sm" id="out22"></td>
+                    <td class="s4"><input type="text" class="form-control input-sm" id="out23"></td>
+                    <td class="s5"><input type="text" class="form-control input-sm" id="out24"></td>
+                    <td class="s6"><input type="text" class="form-control input-sm" id="out25"></td>
+                  </tr>
+                  <tr id="out-q3" class="q3">
+                    <th scope="row" class="text-center">c <div class="legend q3"></div></th>
+                    <td class="s1"><input type="text" class="form-control input-sm" id="out30"></td>
+                    <td class="s2"><input type="text" class="form-control input-sm" id="out31"></td>
+                    <td class="s3"><input type="text" class="form-control input-sm" id="out32"></td>
+                    <td class="s4"><input type="text" class="form-control input-sm" id="out33"></td>
+                    <td class="s5"><input type="text" class="form-control input-sm" id="out34"></td>
+                    <td class="s6"><input type="text" class="form-control input-sm" id="out35"></td>
+                  </tr>
+                  <tr id="out-q4" class="q4">
+                    <th scope="row" class="text-center">d <div class="legend q4"></div></th>
+                    <td class="s1"><input type="text" class="form-control input-sm" id="out40"></td>
+                    <td class="s2"><input type="text" class="form-control input-sm" id="out41"></td>
+                    <td class="s3"><input type="text" class="form-control input-sm" id="out42"></td>
+                    <td class="s4"><input type="text" class="form-control input-sm" id="out43"></td>
+                    <td class="s5"><input type="text" class="form-control input-sm" id="out44"></td>
+                    <td class="s6"><input type="text" class="form-control input-sm" id="out45"></td>
+                  </tr>
+                  <tr id="out-q5" class="q5">
+                    <th scope="row" class="text-center">e <div class="legend q5"></div></th>
+                    <td class="s1"><input type="text" class="form-control input-sm" id="out50"></td>
+                    <td class="s2"><input type="text" class="form-control input-sm" id="out51"></td>
+                    <td class="s3"><input type="text" class="form-control input-sm" id="out52"></td>
+                    <td class="s4"><input type="text" class="form-control input-sm" id="out53"></td>
+                    <td class="s5"><input type="text" class="form-control input-sm" id="out54"></td>
+                    <td class="s6"><input type="text" class="form-control input-sm" id="out55"></td>
+                  </tr>
+                  <tr id="out-q6" class="q6">
+                    <th scope="row" class="text-center">f <div class="legend q6"></div></th>
+                    <td class="s1"><input type="text" class="form-control input-sm" id="out60"></td>
+                    <td class="s2"><input type="text" class="form-control input-sm" id="out61"></td>
+                    <td class="s3"><input type="text" class="form-control input-sm" id="out62"></td>
+                    <td class="s4"><input type="text" class="form-control input-sm" id="out63"></td>
+                    <td class="s5"><input type="text" class="form-control input-sm" id="out64"></td>
+                    <td class="s6"><input type="text" class="form-control input-sm" id="out65"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+     
+            <div id="projections" class="col-md-5">
+              <table class="table table-condensed table-bordered">
+                <thead>
+                  <tr>
+                    <th>Successors</th>
+                    <th class="text-center s1">0</th>
+                    <th class="text-center s2">1</th>
+                    <th class="text-center s3">2</th>
+                    <th class="text-center s4">3</th>
+                    <th class="text-center s5">4</th>
+                    <th class="text-center s6">5</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr id="proj-q1" class="q1">
+                    <th scope="row" class="text-center">a <div class="legend q1"></div></th>
+                    <td class="s1"><input type="text" class="form-control input-sm" id="proj10" placeholder="e.g. a, b"></td>
+                    <td class="s2"><input type="text" class="form-control input-sm" id="proj11"></td>
+                    <td class="s3"><input type="text" class="form-control input-sm" id="proj12"></td>
+                    <td class="s4"><input type="text" class="form-control input-sm" id="proj13"></td>
+                    <td class="s5"><input type="text" class="form-control input-sm" id="proj14"></td>
+                    <td class="s6"><input type="text" class="form-control input-sm" id="proj15"></td>
+                  </tr>
+                  <tr id="proj-q2" class="q2">
+                    <th scope="row" class="text-center">b <div class="legend q2"></div></th>
+                    <td class="s1"><input type="text" class="form-control input-sm" id="proj20"></td>
+                    <td class="s2"><input type="text" class="form-control input-sm" id="proj21"></td>
+                    <td class="s3"><input type="text" class="form-control input-sm" id="proj22"></td>
+                    <td class="s4"><input type="text" class="form-control input-sm" id="proj23"></td>
+                    <td class="s5"><input type="text" class="form-control input-sm" id="proj24"></td>
+                    <td class="s6"><input type="text" class="form-control input-sm" id="proj25"></td>
+                  </tr>
+                  <tr id="proj-q3" class="q3">
+                    <th scope="row" class="text-center">c <div class="legend q3"></div></th>
+                    <td class="s1"><input type="text" class="form-control input-sm" id="proj30"></td>
+                    <td class="s2"><input type="text" class="form-control input-sm" id="proj31"></td>
+                    <td class="s3"><input type="text" class="form-control input-sm" id="proj32"></td>
+                    <td class="s4"><input type="text" class="form-control input-sm" id="proj33"></td>
+                    <td class="s5"><input type="text" class="form-control input-sm" id="proj34"></td>
+                    <td class="s6"><input type="text" class="form-control input-sm" id="proj35"></td>
+                  </tr>
+                  <tr id="proj-q4" class="q4">
+                    <th scope="row" class="text-center">d <div class="legend q4"></div></th>
+                    <td class="s1"><input type="text" class="form-control input-sm" id="proj40"></td>
+                    <td class="s2"><input type="text" class="form-control input-sm" id="proj41"></td>
+                    <td class="s3"><input type="text" class="form-control input-sm" id="proj42"></td>
+                    <td class="s4"><input type="text" class="form-control input-sm" id="proj43"></td>
+                    <td class="s5"><input type="text" class="form-control input-sm" id="proj44"></td>
+                    <td class="s6"><input type="text" class="form-control input-sm" id="proj45"></td>
+                  </tr>
+                  <tr id="proj-q5" class="q5">
+                    <th scope="row" class="text-center">e <div class="legend q5"></div></th>
+                    <td class="s1"><input type="text" class="form-control input-sm" id="proj50"></td>
+                    <td class="s2"><input type="text" class="form-control input-sm" id="proj51"></td>
+                    <td class="s3"><input type="text" class="form-control input-sm" id="proj52"></td>
+                    <td class="s4"><input type="text" class="form-control input-sm" id="proj53"></td>
+                    <td class="s5"><input type="text" class="form-control input-sm" id="proj54"></td>
+                    <td class="s6"><input type="text" class="form-control input-sm" id="proj55"></td>
+                  </tr>
+                  <tr id="proj-q6" class="q6">
+                    <th scope="row" class="text-center">f <div class="legend q6"></div></th>
+                    <td class="s1"><input type="text" class="form-control input-sm" id="proj60"></td>
+                    <td class="s2"><input type="text" class="form-control input-sm" id="proj61"></td>
+                    <td class="s3"><input type="text" class="form-control input-sm" id="proj62"></td>
+                    <td class="s4"><input type="text" class="form-control input-sm" id="proj63"></td>
+                    <td class="s5"><input type="text" class="form-control input-sm" id="proj64"></td>
+                    <td class="s6"><input type="text" class="form-control input-sm" id="proj65"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="alert alert-warning" role="alert">Invalid automaton</div>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-2">
+          <div class="form-group">
+            <label for="level">Level of the tree:</label>
+            <select class="form-control" id="level">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <button id="visualize" type="button" class="btn btn-primary">Visualize</button>
+
+      <div id="placeholder"></div>
+    </div>
+
+    <footer class="container">
+      <p>Graph simulations generated with the library <a href="https://d3js.org/" target="_blank">d3.js</a> for javascript.</p>
+      <p><a href="mailto:aitor.perez@unige.ch">Aitor Pérez</a>, University of Geneva, 2019.</p>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="g3.js"></script>
+    <script type="text/javascript" src="graphs.js"></script>
+    <script type="text/javascript" src="manager.js"></script>
+	</body>
+</html>

@@ -1,0 +1,64 @@
+body {
+  background-color: #F6F6F6;
+}
+
+img {
+  margin: auto;
+  margin-bottom: 10px;
+  max-height: 200px;
+}
+
+#placeholder {
+  margin-top: 20px;
+}
+
+svg {
+  border-style: solid;
+  border-color: #EEEEEE;
+  background-color: #FFFFFF;
+}
+
+.alert {
+  margin-bottom: 0;
+}
+
+.legend {
+  border-radius: 50%;
+  height: 10px;
+  width: 10px;
+  display: inline-block;
+}
+
+.legend.q1 {
+  background-color: #B22222;
+}
+
+.legend.q2 {
+  background-color: #1E90FF;
+}
+
+.legend.q3 {
+  background-color: #32CD32;
+}
+
+.legend.q4 {
+  background-color: #FF8C00;
+}
+
+.legend.q5 {
+  background-color: #FF1493;
+}
+
+.legend.q6 {
+  background-color: #4B0082;
+}
+
+.legend.q7 {
+  background-color: #FFFF00;
+}
+
+footer {
+  margin-top: 50px;
+  margin-bottom: 10px;
+  text-align: right;
+}
